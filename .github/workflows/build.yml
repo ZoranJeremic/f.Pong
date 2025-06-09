@@ -1,31 +1,50 @@
-name: Build Windows Installer
+name: Build f-Pong (Windows + Android)
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v4
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
 
-    - name: Install dependencies
-      run: npm install
+      - name: 📦 Install dependencies
+        run: npm install
 
-    - name: Build Windows installer
-      run: npm run build:win
+      - name: 🛠️ Install JDK & Android tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openjdk-17-jdk android-sdk adb zipalign apksigner wget unzip
+          export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+          echo "JAVA_HOME=$JAVA_HOME" >> $GITHUB_ENV
 
-    - name: Upload .exe installer
-      uses: actions/upload-artifact@v4
-      with:
-        name: f-Pong-installer
-        path: dist/*.exe
+      - name: 🧱 Build for Windows (.exe)
+        run: npm run build:win
+
+      - name: 📱 Build for Android (.apk)
+        run: |
+          npm run build:android
+
+      - name: 📤 Upload Windows installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-Pong-Windows
+          path: dist/*.exe
+
+      - name: 📤 Upload Android APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-Pong-Android
+          path: dist/*.apk
