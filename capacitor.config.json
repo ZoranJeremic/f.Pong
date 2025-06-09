@@ -1,0 +1,6 @@
+{
+  "appId": "com.flake.pong",
+  "appName": "f.Pong",
+  "webDir": "public",
+  "bundledWebRuntime": false
+}
