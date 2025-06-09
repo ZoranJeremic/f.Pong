@@ -1,8 +1,8 @@
-name: Build f.Pong
+name: Build Windows Installer
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -10,31 +10,22 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: 📥 Code checkout
-        uses: actions/checkout@v4
+    - name: Checkout repo
+      uses: actions/checkout@v4
 
-      - name: 📦 Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
 
-      - name: 🧱 Install dependencies
-        run: npm install
+    - name: Install dependencies
+      run: npm install
 
-      - name: 🔧 Electron build for Windows
-        run: npm run build:win
+    - name: Build Windows installer
+      run: npm run build:win
 
-      - name: ☁️ Upload EXE file
-        uses: actions/upload-artifact@v4
-        with:
-          name: windows-build
-          path: dist/*.exe
-
-      - name: 📱 Android build
-        run: npm run build:apk
-
-      - name: ☁️ Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: android-build
-          path: android/app/build/outputs/apk/debug/*.apk
+    - name: Upload .exe installer
+      uses: actions/upload-artifact@v4
+      with:
+        name: f-Pong-installer
+        path: dist/*.exe
