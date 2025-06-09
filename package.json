@@ -1,23 +1,40 @@
 {
   "name": "f-pong",
   "version": "1.0.0",
-  "description": "Retro ping-pong game",
-  "author": "Zoran Jeremić",
+  "description": "Pong game.",
+  "author": "Flake Software",
   "main": "main.js",
   "scripts": {
+    "start": "electron .",
     "build:win": "electron-builder --win nsis",
-    "build:apk": "echo 'Ovo je placeholder za Android build, zameni po potrebi'"
-  },
-  "build": {
-    "appId": "com.flake.fpong",
-    "productName": "f.Pong",
-    "win": {
-      "target": "nsis",
-      "icon": "build/favicon.ico"
-    }
+    "build:android": "electron-builder --android"
   },
   "devDependencies": {
     "electron": "^28.3.3",
     "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.flake.pong",
+    "productName": "f-Pong",
+    "copyright": "© 2025 Flake Software",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*"
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true
+    },
+    "android": {
+      "target": ["apk"],
+      "packageType": "apk"
+    }
   }
 }
