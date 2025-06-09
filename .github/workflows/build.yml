@@ -7,34 +7,33 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
-      - name: Checkout code
+      - name: 📥 Code checkout
         uses: actions/checkout@v4
 
-      - name: Install Node.js
+      - name: 📦 Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      - name: Install dependencies
+      - name: 🧱 Install dependencies
         run: npm install
 
-      - name: Electron build for Windows
+      - name: 🔧 Electron build for Windows
         run: npm run build:win
 
-      - name: Upload EXE
+      - name: ☁️ Upload EXE file
         uses: actions/upload-artifact@v4
         with:
           name: windows-build
           path: dist/*.exe
 
-          
-      - name: 📱Android build
+      - name: 📱 Android build
         run: npm run build:apk
 
-      - name: ☁️Upload APK
+      - name: ☁️ Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: android-build
